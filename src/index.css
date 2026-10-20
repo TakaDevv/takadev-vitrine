@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Source Sans 3 Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-night: #0b1630;
+  --color-brand: #2563eb;
+  --color-brand-dark: #1d4ed8;
+  --color-ink: #273449;
+  --color-muted: #4b5b70;
+  --color-surface: #f4f7fc;
+  --color-line: #e2e8f2;
+  --color-on-night: #e8eef8;
+  --color-on-night-muted: #b7c3d6;
+  --color-brand-soft: #dbe7ff;
+  --color-danger: #b42318;
+}
+
+html {
+  font-family: var(--font-sans);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+body {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-night);
+  outline-offset: 3px;
+  transition: none;
+}
+
+footer :focus-visible,
+.bg-night :focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus {
+  scroll-margin-top: 5.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-node {
+    animation: hero-node 5s ease-in-out infinite;
+  }
+}
+
+@keyframes hero-node {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
