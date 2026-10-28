@@ -4,6 +4,28 @@ import PageIntro from "../components/common/PageIntro.jsx";
 import Seo from "../components/common/Seo.jsx";
 
 export default function LegalNoticePage() {
+  const rows = [
+    { label: "Éditeur", value: company.legalName },
+    { label: "Adresse", value: company.address },
+    {
+      label: "Téléphone",
+      value: (
+        <a href={company.phoneHref} className="link-u text-blue-400">
+          {company.phoneDisplay}
+        </a>
+      ),
+    },
+    {
+      label: "E-mail",
+      value: (
+        <a href={`mailto:${company.email}`} className="link-u break-all text-blue-400">
+          {company.email}
+        </a>
+      ),
+    },
+    { label: "Rattachement", value: `${company.cerist}.` },
+  ];
+
   return (
     <>
       <Seo
@@ -15,29 +37,16 @@ export default function LegalNoticePage() {
         title="Mentions légales"
         description="Cette page identifie l’éditeur du site. Le texte juridique complet doit encore être rédigé et validé par TAKADEV."
       />
-      <div className="py-12 sm:py-16">
+      <div className="py-16 sm:py-20">
         <Container>
-          <div className="max-w-3xl space-y-3 rounded-2xl bg-white p-6 leading-relaxed sm:p-8">
-            <p>
-              <span className="font-semibold text-night">Éditeur :</span> {company.legalName}
-            </p>
-            <p>
-              <span className="font-semibold text-night">Adresse :</span> {company.address}
-            </p>
-            <p>
-              <span className="font-semibold text-night">Téléphone :</span>{" "}
-              <a href={company.phoneHref} className="text-brand underline underline-offset-2 hover:text-brand-dark">
-                {company.phoneDisplay}
-              </a>
-            </p>
-            <p>
-              <span className="font-semibold text-night">E-mail :</span>{" "}
-              <a href={`mailto:${company.email}`} className="break-all text-brand underline underline-offset-2 hover:text-brand-dark">
-                {company.email}
-              </a>
-            </p>
-            <p>{company.cerist}.</p>
-          </div>
+          <dl className="max-w-3xl border-t border-line">
+            {rows.map((row) => (
+              <div key={row.label} className="grid gap-1 border-b border-line py-5 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6">
+                <dt className="font-mono text-xs leading-7 tracking-[0.12em] text-ink-400 uppercase">{row.label}</dt>
+                <dd className="leading-7 text-ink-50">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
         </Container>
       </div>
     </>

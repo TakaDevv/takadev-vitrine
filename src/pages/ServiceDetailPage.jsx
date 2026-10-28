@@ -1,12 +1,18 @@
-import { Check } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
 import Container from "../components/common/Container.jsx";
 import PageIntro from "../components/common/PageIntro.jsx";
+import Reveal from "../components/common/Reveal.jsx";
 import Seo from "../components/common/Seo.jsx";
 import ServiceIcon from "../components/services/ServiceIcon.jsx";
+import { company } from "../data/company.js";
 import { getService, services } from "../data/services.js";
 import NotFoundPage from "./NotFoundPage.jsx";
+
+function pad(value) {
+  return String(value).padStart(2, "0");
+}
 
 export default function ServiceDetailPage() {
   const { slug } = useParams();
@@ -16,65 +22,109 @@ export default function ServiceDetailPage() {
     return <NotFoundPage />;
   }
 
+  const position = services.findIndex((item) => item.slug === service.slug) + 1;
   const others = services.filter((item) => item.slug !== service.slug);
 
   return (
     <>
       <Seo title={service.title} description={service.summary} />
-      <PageIntro eyebrow="Service" title={service.title} description={service.description} />
-      <div className="py-12 sm:py-16">
-        <Container className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <section aria-labelledby="prestations">
-            <div className="flex items-center gap-3">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-brand-soft text-brand-dark">
-                <ServiceIcon name={service.icon} />
-              </span>
-              <h2 id="prestations" className="font-display text-2xl font-semibold text-night">
+      <PageIntro
+        eyebrow={`Service ${pad(position)} / ${pad(services.length)}`}
+        title={service.title}
+        description={service.description}
+      >
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+          <span className="icon-tile size-14">
+            <ServiceIcon name={service.icon} size={26} />
+          </span>
+          <Link
+            to="/services"
+            className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink-300 transition-colors hover:text-ink-50"
+          >
+            <ArrowLeft aria-hidden="true" size={16} className="transition-transform duration-300 group-hover:-translate-x-1" />
+            Tous les services
+          </Link>
+        </div>
+      </PageIntro>
+
+      <div className="py-16 sm:py-20 lg:py-24">
+        <Container className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+          <section aria-labelledby="prestations" className="lg:col-span-7">
+            <Reveal>
+              <p className="section-label">
+                <span aria-hidden="true" className="section-tick" />
+                {service.offerings.length} prestations
+              </p>
+              <h2
+                id="prestations"
+                className="mt-5 font-display text-[clamp(1.75rem,1.3rem+1.6vw,2.5rem)] font-semibold tracking-tight text-ink-50"
+              >
                 Prestations
               </h2>
-            </div>
-            <ul className="mt-6 grid gap-3">
-              {service.offerings.map((offering) => (
-                <li key={offering} className="flex gap-3 rounded-xl bg-white px-4 py-3">
-                  <Check aria-hidden="true" className="mt-0.5 shrink-0 text-brand" size={18} />
-                  <span>{offering}</span>
-                </li>
+            </Reveal>
+            <ol className="mt-10 border-t border-line">
+              {service.offerings.map((offering, index) => (
+                <Reveal
+                  as="li"
+                  key={offering}
+                  delay={index * 60}
+                  className="grid grid-cols-[3rem_minmax(0,1fr)] items-baseline gap-4 border-b border-line py-5 sm:py-6"
+                >
+                  <span className="font-mono text-xs tracking-[0.08em] text-cyan-400">{pad(index + 1)}</span>
+                  <span className="font-display text-lg leading-snug font-medium text-ink-50 sm:text-xl">{offering}</span>
+                </Reveal>
               ))}
-            </ul>
+            </ol>
           </section>
 
-          <aside className="rounded-2xl bg-night p-6 text-on-night lg:sticky lg:top-24">
-            <h2 className="font-display text-xl font-semibold text-white">Ce service vous concerne ?</h2>
-            <p className="mt-3 leading-relaxed text-on-night-muted">
-              La demande ouverte depuis cette page reste rattachée à {service.title}.
-            </p>
-            <div className="mt-6">
-              <Button to={`/contact?service=${service.slug}`} className="w-full">
-                Demander un devis
-              </Button>
+          <Reveal as="aside" delay={120} className="lg:sticky lg:top-28 lg:col-span-5">
+            <div className="card-service card-service--featured p-7 sm:p-9">
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink-50">
+                Ce service vous concerne ?
+              </h2>
+              <p className="mt-3 leading-relaxed">
+                La demande ouverte depuis cette page reste rattachée à {service.title}.
+              </p>
+              <div className="mt-8 grid gap-3">
+                <Button to={`/contact?service=${service.slug}`} arrow className="w-full">
+                  Discutons de votre projet
+                </Button>
+                <a href={company.phoneHref} className="btn btn-ghost w-full">
+                  Appeler le {company.phoneDisplay}
+                </a>
+              </div>
             </div>
-          </aside>
+          </Reveal>
         </Container>
+      </div>
 
-        <Container className="mt-14">
-          <h2 className="font-display text-2xl font-semibold text-night">Autres services</h2>
-          <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {others.map((item) => (
-              <li key={item.slug}>
+      <section aria-labelledby="autres-services" className="border-t border-line bg-night-800 py-16 sm:py-20">
+        <Container>
+          <h2 id="autres-services" className="font-display text-2xl font-semibold tracking-tight text-ink-50">
+            Autres services
+          </h2>
+          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((item, index) => (
+              <Reveal as="li" key={item.slug} delay={(index % 3) * 60}>
                 <Link
                   to={`/services/${item.slug}`}
-                  className="flex min-h-11 items-center gap-3 rounded-xl bg-white px-4 py-3 font-semibold text-night hover:text-brand"
+                  className="group flex min-h-16 items-center gap-4 rounded-[14px] border border-line bg-night-700/60 px-4 py-3 font-display font-semibold text-ink-50 transition-colors duration-300 hover:border-line-strong hover:bg-night-700"
                 >
-                  <span className="text-brand">
-                    <ServiceIcon name={item.icon} size={18} />
+                  <span className="text-blue-400 transition-colors group-hover:text-cyan-400">
+                    <ServiceIcon name={item.icon} size={20} />
                   </span>
-                  {item.title}
+                  <span className="flex-1">{item.title}</span>
+                  <ArrowRight
+                    aria-hidden="true"
+                    size={16}
+                    className="text-ink-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-cyan-400"
+                  />
                 </Link>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </Container>
-      </div>
+      </section>
     </>
   );
 }

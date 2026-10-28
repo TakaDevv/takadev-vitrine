@@ -1,16 +1,39 @@
-export default function SectionHeading({ eyebrow, title, description, id }) {
+import Reveal from "./Reveal.jsx";
+
+export default function SectionHeading({
+  id,
+  index,
+  eyebrow,
+  title,
+  description,
+  tone = "night",
+  as: Heading = "h2",
+  className = "",
+}) {
+  const paper = tone === "paper";
+
   return (
-    <div className="max-w-2xl">
+    <Reveal className={`max-w-3xl ${className}`}>
       {eyebrow ? (
-        <p className="text-sm font-semibold tracking-[0.14em] text-brand uppercase">{eyebrow}</p>
+        <p className="section-label">
+          {index ? <span className="section-index">{index}</span> : null}
+          <span aria-hidden="true" className="section-tick" />
+          {eyebrow}
+        </p>
       ) : null}
-      <h2
+      <Heading
         id={id}
-        className={`font-display text-3xl font-semibold tracking-tight text-balance text-night sm:text-4xl ${eyebrow ? "mt-3" : ""}`}
+        className={`font-display text-[clamp(2rem,1.4rem+2.4vw,3rem)] leading-[1.08] font-semibold tracking-[-0.025em] ${
+          paper ? "text-paper-ink" : "text-ink-50"
+        } ${eyebrow ? "mt-5" : ""}`}
       >
         {title}
-      </h2>
-      {description ? <p className="mt-4 text-lg leading-relaxed">{description}</p> : null}
-    </div>
+      </Heading>
+      {description ? (
+        <p className={`mt-5 max-w-2xl text-lg leading-relaxed ${paper ? "text-paper-body" : "text-ink-300"}`}>
+          {description}
+        </p>
+      ) : null}
+    </Reveal>
   );
 }

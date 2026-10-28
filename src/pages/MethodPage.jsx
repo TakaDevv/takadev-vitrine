@@ -1,6 +1,7 @@
-import CtaBand from "../components/common/CtaBand.jsx";
 import Container from "../components/common/Container.jsx";
+import CtaBand from "../components/common/CtaBand.jsx";
 import PageIntro from "../components/common/PageIntro.jsx";
+import Reveal from "../components/common/Reveal.jsx";
 import Seo from "../components/common/Seo.jsx";
 import { methodSteps } from "../data/method.js";
 
@@ -16,19 +17,32 @@ export default function MethodPage() {
         title="Six étapes, de l’analyse à la maintenance."
         description="La démarche reste la même, quel que soit le type de solution : comprendre le besoin, concevoir, développer, vérifier, mettre en service, puis accompagner."
       />
-      <div className="py-12 sm:py-16">
+      <section aria-label="Étapes de la méthode" className="py-16 sm:py-24 lg:py-28">
         <Container>
-          <ol className="grid gap-4">
+          <ol className="border-t border-line">
             {methodSteps.map((step, index) => (
-              <li key={step.title} className="rounded-2xl bg-white p-6 sm:p-7">
-                <p className="text-sm font-semibold text-brand">0{index + 1}</p>
-                <h2 className="mt-2 font-display text-2xl font-semibold text-night">{step.title}</h2>
-                <p className="mt-2 max-w-2xl leading-relaxed">{step.text}</p>
-              </li>
+              <Reveal
+                as="li"
+                key={step.title}
+                delay={60}
+                className="group grid gap-4 border-b border-line py-10 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-8 lg:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)] lg:items-baseline lg:py-14"
+              >
+                <span
+                  aria-hidden="true"
+                  className="font-display text-6xl leading-none font-bold tracking-tight text-transparent [-webkit-text-stroke:1px_rgb(148_163_184/0.4)] transition-[-webkit-text-stroke-color] duration-500 group-hover:[-webkit-text-stroke-color:#38bdf8] lg:text-7xl"
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-ink-50 sm:text-3xl">
+                  <span className="sr-only">Étape {index + 1} : </span>
+                  {step.title}
+                </h2>
+                <p className="max-w-xl text-lg leading-relaxed sm:col-start-2 lg:col-start-3">{step.text}</p>
+              </Reveal>
             ))}
           </ol>
         </Container>
-      </div>
+      </section>
       <CtaBand />
     </>
   );

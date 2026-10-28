@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { AlertCircle, CheckCircle2, ChevronDown, Info, LoaderCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { company } from "../../data/company.js";
 import { services } from "../../data/services.js";
@@ -18,30 +19,42 @@ const emptyForm = {
 };
 
 function fieldClass(invalid) {
-  return `w-full rounded-lg border bg-white px-3 py-2.5 text-ink outline-none ${
-    invalid ? "border-danger" : "border-line"
+  return `w-full rounded-lg border bg-night-600 px-4 py-3 text-ink-50 placeholder:text-ink-400 outline-none transition-[border-color,box-shadow] duration-150 focus:border-blue-500 focus:shadow-[0_0_0_4px_rgb(59_130_246/0.18)] ${
+    invalid ? "border-danger" : "border-line-strong hover:border-ink-400/60"
   }`;
 }
 
 function Field({ id, label, hint, error, required = false, children }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-semibold text-night">
+      <label htmlFor={id} className="block font-display text-sm font-semibold text-ink-50">
         {label}
         {required ? (
           <>
-            <span aria-hidden="true"> *</span>
+            <span aria-hidden="true" className="text-cyan-400"> *</span>
             <span className="sr-only"> (obligatoire)</span>
           </>
         ) : null}
-        {hint ? <span className="font-normal text-muted"> {hint}</span> : null}
+        {hint ? <span className="font-sans font-normal text-ink-400"> {hint}</span> : null}
       </label>
-      <div className="mt-2">{children}</div>
+      <div className="relative mt-2">{children}</div>
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-sm text-danger">
+        <p id={`${id}-error`} className="mt-2 flex items-start gap-1.5 text-sm text-danger">
+          <AlertCircle aria-hidden="true" size={15} className="mt-0.5 shrink-0" />
           {error}
         </p>
       ) : null}
+    </div>
+  );
+}
+
+function StatusPanel({ statusRef, tone = "info", children }) {
+  const Icon = tone === "success" ? CheckCircle2 : Info;
+  const color = tone === "success" ? "border-success/40 bg-success/10" : "border-line-strong bg-night-600/60";
+  return (
+    <div ref={statusRef} tabIndex={-1} className={`flex gap-3 rounded-[14px] border px-5 py-4 leading-relaxed outline-none ${color}`}>
+      <Icon aria-hidden="true" size={20} className={`mt-0.5 shrink-0 ${tone === "success" ? "text-success" : "text-blue-400"}`} />
+      <p className="text-ink-50">{children}</p>
     </div>
   );
 }
@@ -100,48 +113,68 @@ export default function ContactForm({ initialService = "" }) {
     setStatus(result.ok ? "success" : result.reason);
   }
 
+  const contactLinks = (
+    <>
+      Appelez le{" "}
+      <a href={company.phoneHref} className="link-u font-semibold">
+        {company.phoneDisplay}
+      </a>{" "}
+      ou écrivez à{" "}
+      <a href={`mailto:${company.email}`} className="link-u font-semibold break-all">
+        {company.email}
+      </a>
+      .
+    </>
+  );
+
   return (
     <form
-      className="rounded-2xl bg-white p-6 sm:p-8"
+      className="relative overflow-hidden rounded-[18px] border border-line bg-night-700/60 p-6 sm:p-10"
       onSubmit={onSubmit}
       noValidate
       aria-busy={status === "sending"}
     >
-      <h2 className="font-display text-2xl font-semibold text-night">Préparer une demande</h2>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-blue-500 to-transparent"
+      />
+      <h2 className="font-display text-2xl font-semibold tracking-tight text-ink-50 sm:text-3xl">Préparer une demande</h2>
       <p className="mt-3 leading-relaxed">
-        Les champs marqués d’une étoile sont obligatoires. Sans service d’envoi configuré, TAKADEV
-        ne reçoit pas le message.
+        Les champs marqués d’une étoile sont obligatoires. Sans service d’envoi configuré, TAKADEV ne reçoit
+        pas le message.
       </p>
 
-      <div className="mt-6 grid gap-5">
-        <Field id="name" label="Nom complet" required error={errors.name}>
-          <input
-            id="name"
-            name="name"
-            autoComplete="name"
-            value={form.name}
-            onChange={(event) => update("name", event.target.value)}
-            aria-invalid={Boolean(errors.name)}
-            aria-describedby={errors.name ? "name-error" : undefined}
-            className={fieldClass(errors.name)}
-          />
-        </Field>
+      <div className="mt-8 grid gap-6">
+        <div className="grid gap-6 sm:grid-cols-2">
+          <Field id="name" label="Nom complet" required error={errors.name}>
+            <input
+              id="name"
+              name="name"
+              autoComplete="name"
+              value={form.name}
+              onChange={(event) => update("name", event.target.value)}
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? "name-error" : undefined}
+              className={fieldClass(errors.name)}
+            />
+          </Field>
 
-        <Field id="email" label="Adresse e-mail" required error={errors.email}>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            value={form.email}
-            onChange={(event) => update("email", event.target.value)}
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? "email-error" : undefined}
-            className={fieldClass(errors.email)}
-          />
-        </Field>
+          <Field id="email" label="Adresse e-mail" required error={errors.email}>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={(event) => update("email", event.target.value)}
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "email-error" : undefined}
+              className={fieldClass(errors.email)}
+            />
+          </Field>
+        </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           <Field id="phone" label="Téléphone" hint="(facultatif)" error={errors.phone}>
             <input
               id="phone"
@@ -177,7 +210,7 @@ export default function ContactForm({ initialService = "" }) {
             onChange={(event) => update("service", event.target.value)}
             aria-invalid={Boolean(errors.service)}
             aria-describedby={errors.service ? "service-error" : undefined}
-            className={fieldClass(errors.service)}
+            className={`${fieldClass(errors.service)} appearance-none pr-11`}
           >
             <option value="">Choisir un service</option>
             {services.map((service) => (
@@ -186,6 +219,11 @@ export default function ContactForm({ initialService = "" }) {
               </option>
             ))}
           </select>
+          <ChevronDown
+            aria-hidden="true"
+            size={18}
+            className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-ink-400"
+          />
         </Field>
 
         <Field id="subject" label="Objet de la demande" required error={errors.subject}>
@@ -209,12 +247,12 @@ export default function ContactForm({ initialService = "" }) {
             onChange={(event) => update("message", event.target.value)}
             aria-invalid={Boolean(errors.message)}
             aria-describedby={errors.message ? "message-error" : undefined}
-            className={fieldClass(errors.message)}
+            className={`${fieldClass(errors.message)} min-h-40 resize-y`}
           />
         </Field>
 
         <div>
-          <label className="flex items-start gap-3 text-sm leading-relaxed" htmlFor="consent">
+          <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed" htmlFor="consent">
             <input
               id="consent"
               name="consent"
@@ -223,69 +261,70 @@ export default function ContactForm({ initialService = "" }) {
               onChange={(event) => update("consent", event.target.checked)}
               aria-invalid={Boolean(errors.consent)}
               aria-describedby={errors.consent ? "consent-error" : undefined}
-              className="mt-1 size-4 accent-brand"
+              className="mt-0.5 size-5 shrink-0 cursor-pointer accent-blue-500"
             />
             <span>
               J’accepte que TAKADEV utilise ces informations pour répondre à ma demande.
               <span className="sr-only"> (obligatoire)</span> Consultez la{" "}
-              <Link to="/politique-de-confidentialite" className="font-semibold text-brand underline underline-offset-2">
+              <Link to="/politique-de-confidentialite" className="link-u font-semibold text-blue-400">
                 politique de confidentialité
               </Link>
               .
             </span>
           </label>
           {errors.consent ? (
-            <p id="consent-error" className="mt-2 text-sm text-danger">
+            <p id="consent-error" className="mt-2 flex items-start gap-1.5 text-sm text-danger">
+              <AlertCircle aria-hidden="true" size={15} className="mt-0.5 shrink-0" />
               {errors.consent}
             </p>
           ) : null}
         </div>
       </div>
 
-      <div className="mt-6">
-        <Button type="submit" disabled={status === "sending"}>
-          {status === "sending" ? "Envoi en cours…" : "Envoyer la demande"}
+      <div className="mt-8 flex flex-col gap-4 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
+        <Button type="submit" disabled={status === "sending"} arrow={status !== "sending"}>
+          {status === "sending" ? (
+            <span className="inline-flex items-center gap-2">
+              <LoaderCircle aria-hidden="true" size={16} className="animate-spin" />
+              Envoi en cours…
+            </span>
+          ) : (
+            "Envoyer la demande"
+          )}
         </Button>
+        <p className="text-sm text-ink-400">
+          <span aria-hidden="true" className="text-cyan-400">*</span> Champ obligatoire
+        </p>
       </div>
 
-      <div className="mt-5" aria-live="polite">
+      <div className="mt-6 empty:hidden" aria-live="polite">
         {status === "sending" ? <p className="sr-only">Envoi en cours…</p> : null}
         {status === "not_configured" ? (
-          <p ref={statusRef} tabIndex={-1} className="rounded-xl bg-surface px-4 py-3 leading-relaxed outline-none">
-            L’envoi en ligne n’est pas activé. Votre message n’a pas été transmis. Appelez le{" "}
-            <a href={company.phoneHref} className="font-semibold text-night underline underline-offset-2">
-              {company.phoneDisplay}
-            </a>{" "}
-            ou écrivez à{" "}
-            <a href={`mailto:${company.email}`} className="font-semibold break-all text-night underline underline-offset-2">
-              {company.email}
-            </a>
-            .
-          </p>
+          <StatusPanel statusRef={statusRef}>
+            L’envoi en ligne n’est pas activé. Votre message n’a pas été transmis. {contactLinks}
+          </StatusPanel>
         ) : null}
         {status === "preview" ? (
-          <p ref={statusRef} tabIndex={-1} className="rounded-xl bg-surface px-4 py-3 leading-relaxed outline-none">
-            Aperçu de confirmation. Aucune demande n’a été transmise à TAKADEV. Le message partira
-            seulement lorsqu’un service d’envoi aura été configuré et testé.
-          </p>
+          <StatusPanel statusRef={statusRef}>
+            Aperçu de confirmation. Aucune demande n’a été transmise à TAKADEV. Le message partira seulement
+            lorsqu’un service d’envoi aura été configuré et testé.
+          </StatusPanel>
         ) : null}
         {status === "error" ? (
-          <p ref={statusRef} tabIndex={-1} className="text-sm text-danger outline-none" role="alert">
-            La demande n’a pas pu être envoyée. Réessayez, appelez le{" "}
-            <a href={company.phoneHref} className="font-semibold underline underline-offset-2">
-              {company.phoneDisplay}
-            </a>{" "}
-            ou écrivez à{" "}
-            <a href={`mailto:${company.email}`} className="font-semibold break-all underline underline-offset-2">
-              {company.email}
-            </a>
-            .
-          </p>
+          <div
+            ref={statusRef}
+            tabIndex={-1}
+            role="alert"
+            className="flex gap-3 rounded-[14px] border border-danger/40 bg-danger/10 px-5 py-4 leading-relaxed text-ink-50 outline-none"
+          >
+            <AlertCircle aria-hidden="true" size={20} className="mt-0.5 shrink-0 text-danger" />
+            <p>La demande n’a pas pu être envoyée. Réessayez. {contactLinks}</p>
+          </div>
         ) : null}
         {status === "success" ? (
-          <p ref={statusRef} tabIndex={-1} className="rounded-xl bg-surface px-4 py-3 leading-relaxed outline-none">
+          <StatusPanel statusRef={statusRef} tone="success">
             Votre demande a été envoyée. TAKADEV vous répondra à l’adresse indiquée.
-          </p>
+          </StatusPanel>
         ) : null}
       </div>
     </form>

@@ -1,17 +1,37 @@
 import Container from "./Container.jsx";
 
-export default function PageIntro({ eyebrow, title, description }) {
+export default function PageIntro({ eyebrow, title, description, children }) {
   return (
-    <header className="border-b border-line bg-white">
-      <Container className="py-14 sm:py-16">
+    <header className="relative isolate overflow-hidden border-b border-line">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="bg-grid absolute inset-0" />
+        <div className="light-field" />
+      </div>
+      <Container className="pt-32 pb-16 sm:pt-40 sm:pb-20 lg:pt-44 lg:pb-24">
         {eyebrow ? (
-          <p className="text-sm font-semibold tracking-[0.14em] text-brand uppercase">{eyebrow}</p>
+          <p className="enter section-label" style={{ "--d": "60ms" }}>
+            <span aria-hidden="true" className="section-tick" />
+            {eyebrow}
+          </p>
         ) : null}
-        <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-tight text-night sm:text-5xl">
+        <h1
+          className="enter mt-6 max-w-4xl font-display text-[clamp(2.3rem,1.5rem+3.2vw,3.75rem)] leading-[1.05] font-bold tracking-[-0.03em] text-ink-50"
+          style={{ "--d": "140ms" }}
+        >
           {title}
         </h1>
         {description ? (
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed">{description}</p>
+          <p
+            className="enter mt-6 max-w-2xl text-lg leading-relaxed text-ink-300 sm:text-xl"
+            style={{ "--d": "240ms" }}
+          >
+            {description}
+          </p>
+        ) : null}
+        {children ? (
+          <div className="enter mt-10" style={{ "--d": "340ms" }}>
+            {children}
+          </div>
         ) : null}
       </Container>
     </header>

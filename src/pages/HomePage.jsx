@@ -1,3 +1,4 @@
+import AboutEditorial from "../components/about/AboutEditorial.jsx";
 import CtaBand from "../components/common/CtaBand.jsx";
 import Seo from "../components/common/Seo.jsx";
 import Advantages from "../components/home/Advantages.jsx";
@@ -41,9 +42,15 @@ export default function HomePage() {
       />
       <Hero />
       <ServicePreview />
+      <AboutEditorial
+        id="a-propos-apercu"
+        index="02"
+        title="Une filiale du CERIST dédiée aux solutions numériques."
+        showLink
+      />
       <Advantages />
       <ProcessPreview />
-      <CtaBand />
+      <CtaBand index="05" />
     </>
   );
 }
