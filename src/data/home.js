@@ -2,16 +2,19 @@ export const hero = {
   eyebrow: "EPE TAKADEV SPA · Filiale du CERIST",
   // One entry per word so the headline can reveal word by word.
   headline: [
-    { text: "Nous" },
-    { text: "concevons" },
-    { text: "les" },
-    { text: "technologies" },
-    { text: "qui" },
-    { text: "font" },
-    { text: "avancer", accent: true },
-    { text: "votre" },
-    { text: "entreprise." },
+    { text: "Votre" },
+    { text: "partenaire" },
+    { text: "pour" },
+    { text: "concevoir" },
+    { text: "et" },
+    { text: "faire" },
+    { text: "évoluer", accent: true },
+    { text: "vos" },
+    { text: "solutions" },
+    { text: "numériques." },
   ],
+  description:
+    "Du développement web et mobile aux systèmes de gestion, à la cybersécurité et à l’intelligence artificielle, TAKADEV accompagne vos projets de la conception à la mise en production.",
   domains: ["Web", "Mobile", "Logiciel sur mesure", "Cloud", "Cybersécurité", "Data & IA", "Formation"],
 };
 

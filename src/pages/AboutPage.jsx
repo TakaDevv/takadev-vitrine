@@ -52,7 +52,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="vision" className="border-y border-line bg-night-800 py-16 sm:py-24 lg:py-32">
+      <section aria-labelledby="vision" className="theme-dark bg-night-900 py-16 sm:py-24 lg:py-32">
         <Container className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-6">
             <Reveal>

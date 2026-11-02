@@ -2,7 +2,7 @@ import Container from "./Container.jsx";
 
 export default function PageIntro({ eyebrow, title, description, children }) {
   return (
-    <header className="relative isolate overflow-hidden border-b border-line">
+    <header className="theme-dark relative isolate overflow-hidden bg-night-900">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="bg-grid absolute inset-0" />
         <div className="light-field" />

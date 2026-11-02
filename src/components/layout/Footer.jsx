@@ -5,7 +5,6 @@ import { company } from "../../data/company.js";
 import { legalNavigation, mainNavigation } from "../../data/navigation.js";
 import { services } from "../../data/services.js";
 import Container from "../common/Container.jsx";
-import Wordmark from "./Wordmark.jsx";
 
 const year = new Date().getFullYear();
 
@@ -13,21 +12,18 @@ const linkClass = "inline-flex min-h-9 items-center text-ink-400 transition-colo
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-line bg-night-900">
+    <footer className="relative overflow-hidden border-t border-line bg-night-800">
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-20">
         <div className="sm:col-span-2 lg:col-span-4">
-          <Wordmark caption />
+          <img
+            src={logo}
+            alt="Logo EPE TAKADEV SPA, filiale du CERIST"
+            width="800"
+            height="140"
+            loading="lazy"
+            className="h-9 w-auto sm:h-10"
+          />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-ink-400">{company.footerSummary}</p>
-          <div className="mt-7 inline-flex rounded-[10px] bg-ink-50 px-4 py-3">
-            <img
-              src={logo}
-              alt="Logo EPE TAKADEV SPA, filiale du CERIST"
-              width="800"
-              height="140"
-              loading="lazy"
-              className="h-8 w-auto sm:h-9"
-            />
-          </div>
         </div>
 
         <nav aria-label="Pied de page" className="lg:col-span-2">
@@ -71,9 +67,17 @@ export default function Footer() {
                 <span className="break-all">{company.email}</span>
               </a>
             </li>
-            <li className="flex items-start gap-3 pt-1.5 text-ink-400">
-              <MapPin aria-hidden="true" size={16} className="mt-0.5 shrink-0 text-blue-400" />
-              <address className="not-italic">{company.address}</address>
+            <li>
+              <a
+                href={company.mapsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${linkClass} items-start gap-3 pt-1.5`}
+              >
+                <MapPin aria-hidden="true" size={16} className="mt-0.5 shrink-0 text-blue-400" />
+                <address className="not-italic">{company.address}</address>
+                <span className="sr-only"> — voir sur Google Maps (nouvel onglet)</span>
+              </a>
             </li>
           </ul>
         </div>

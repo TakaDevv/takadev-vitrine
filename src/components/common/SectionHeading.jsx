@@ -23,7 +23,7 @@ export default function SectionHeading({
       ) : null}
       <Heading
         id={id}
-        className={`font-display text-[clamp(2rem,1.4rem+2.4vw,3rem)] leading-[1.08] font-semibold tracking-[-0.025em] ${
+        className={`section-title font-display text-[clamp(2rem,1.4rem+2.4vw,3rem)] leading-[1.08] font-semibold tracking-[-0.025em] ${
           paper ? "text-paper-ink" : "text-ink-50"
         } ${eyebrow ? "mt-5" : ""}`}
       >

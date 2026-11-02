@@ -16,6 +16,7 @@ const emptyForm = {
   subject: "",
   message: "",
   consent: false,
+  website: "",
 };
 
 function fieldClass(invalid) {
@@ -99,6 +100,12 @@ export default function ContactForm({ initialService = "" }) {
       return;
     }
 
+    // Honeypot: people never see this field, bots fill it. Pretend success and send nothing.
+    if (form.website) {
+      setStatus("success");
+      return;
+    }
+
     setStatus("sending");
     const result = await submitContactRequest({
       name: form.name.trim(),
@@ -129,7 +136,7 @@ export default function ContactForm({ initialService = "" }) {
 
   return (
     <form
-      className="relative overflow-hidden rounded-[18px] border border-line bg-night-700/60 p-6 sm:p-10"
+      className="relative overflow-hidden rounded-[20px] border border-line bg-night-700 p-6 shadow-lift sm:p-10"
       onSubmit={onSubmit}
       noValidate
       aria-busy={status === "sending"}
@@ -140,9 +147,21 @@ export default function ContactForm({ initialService = "" }) {
       />
       <h2 className="font-display text-2xl font-semibold tracking-tight text-ink-50 sm:text-3xl">Préparer une demande</h2>
       <p className="mt-3 leading-relaxed">
-        Les champs marqués d’une étoile sont obligatoires. Sans service d’envoi configuré, TAKADEV ne reçoit
-        pas le message.
+        Les champs marqués d’une étoile sont obligatoires. Votre demande est envoyée par e-mail à {company.email}.
       </p>
+
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label htmlFor="website">Site web</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={(event) => update("website", event.target.value)}
+        />
+      </div>
 
       <div className="mt-8 grid gap-6">
         <div className="grid gap-6 sm:grid-cols-2">
@@ -299,15 +318,16 @@ export default function ContactForm({ initialService = "" }) {
 
       <div className="mt-6 empty:hidden" aria-live="polite">
         {status === "sending" ? <p className="sr-only">Envoi en cours…</p> : null}
-        {status === "not_configured" ? (
-          <StatusPanel statusRef={statusRef}>
-            L’envoi en ligne n’est pas activé. Votre message n’a pas été transmis. {contactLinks}
-          </StatusPanel>
-        ) : null}
         {status === "preview" ? (
           <StatusPanel statusRef={statusRef}>
             Aperçu de confirmation. Aucune demande n’a été transmise à TAKADEV. Le message partira seulement
             lorsqu’un service d’envoi aura été configuré et testé.
+          </StatusPanel>
+        ) : null}
+        {status === "activation" ? (
+          <StatusPanel statusRef={statusRef}>
+            L’envoi par e-mail doit d’abord être activé : un message « Activate Form » de FormSubmit vient d’être
+            envoyé à {company.email}. Une fois le lien cliqué, les demandes seront transmises. {contactLinks}
           </StatusPanel>
         ) : null}
         {status === "error" ? (

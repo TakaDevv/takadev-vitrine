@@ -5,13 +5,14 @@ import { company } from "../../data/company.js";
 import { mainNavigation } from "../../data/navigation.js";
 import Button from "../common/Button.jsx";
 import Container from "../common/Container.jsx";
-import Wordmark from "./Wordmark.jsx";
+import logo from "../../assets/logo-takadev.png";
 
 export default function Header() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [openPath, setOpenPath] = useState(pathname);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const menuButtonRef = useRef(null);
 
   if (pathname !== openPath) {
@@ -19,9 +20,16 @@ export default function Header() {
     setOpen(false);
   }
 
+  // Slides away while reading down, comes back as soon as the visitor scrolls up.
   useEffect(() => {
+    let last = window.scrollY;
     function onScroll() {
-      setScrolled(window.scrollY > 12);
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      if (Math.abs(y - last) > 6) {
+        setHidden(y > last && y > 480);
+        last = y;
+      }
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -61,12 +69,17 @@ export default function Header() {
   }, [open]);
 
   const solid = scrolled || open;
+  const tucked = hidden && !open;
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ease-premium ${
-          solid ? "border-line bg-night-900/85 backdrop-blur-md" : "border-transparent bg-transparent"
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,transform] duration-500 ease-premium ${
+          tucked ? "-translate-y-full focus-within:translate-y-0" : ""
+        } ${
+          solid
+            ? "border-line bg-night-800/90 shadow-[0_10px_30px_-24px_rgb(11_22_48/0.5)] backdrop-blur-md"
+            : "theme-dark border-transparent bg-transparent"
         }`}
       >
         <Container
@@ -74,8 +87,20 @@ export default function Header() {
             scrolled ? "h-16" : "h-16 lg:h-20"
           }`}
         >
-          <Link to="/" className="shrink-0 rounded-md" aria-label="EPE TAKADEV SPA, accueil">
-            <Wordmark caption />
+          {/* The official logo has a white ground: it sits on a white plate over the navy hero. */}
+          <Link
+            to="/"
+            className={`shrink-0 rounded-[10px] bg-white transition-[padding,box-shadow] duration-300 ease-premium ${
+              solid ? "px-0 py-0" : "px-3 py-2 shadow-[0_10px_30px_-12px_rgb(0_0_0/0.6)]"
+            }`}
+          >
+            <img
+              src={logo}
+              alt="EPE TAKADEV SPA, filiale du CERIST — accueil"
+              width="800"
+              height="140"
+              className="h-7 w-auto sm:h-8 lg:h-9"
+            />
           </Link>
 
           <nav aria-label="Navigation principale" className="hidden lg:block">
@@ -97,7 +122,7 @@ export default function Header() {
           <div className="flex shrink-0 items-center gap-2">
             <div className="hidden sm:block">
               <Button to="/contact" arrow className="min-h-10 px-4 text-sm">
-                Discutons de votre projet
+                Parlons de votre projet
               </Button>
             </div>
             <button
@@ -113,6 +138,7 @@ export default function Header() {
             </button>
           </div>
         </Container>
+        <span aria-hidden="true" className="scroll-progress" />
       </header>
 
       {/* Sibling of the header: its backdrop-filter would otherwise trap this fixed panel. */}
@@ -145,7 +171,7 @@ export default function Header() {
           </nav>
           <div className="menu-item grid gap-5" style={{ "--i": mainNavigation.length }}>
             <Button to="/contact" arrow className="w-full">
-              Discutons de votre projet
+              Parlons de votre projet
             </Button>
             <p className="text-sm leading-relaxed text-ink-400">
               <a href={company.phoneHref} className="link-u text-ink-50">

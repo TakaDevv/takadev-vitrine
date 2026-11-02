@@ -1,0 +1,121 @@
+import {
+  CloudDemo,
+  DataDemo,
+  DesignDemo,
+  IntegrationDemo,
+  MobileDemo,
+  SecurityDemo,
+  SoftwareDemo,
+  SupportDemo,
+  TrainingDemo,
+  WebDemo,
+} from "../ServiceDemos.jsx";
+import {
+  AndroidDemo,
+  ApiDemo,
+  AppUpdateDemo,
+  AutomationDemo,
+  BusinessAppDemo,
+  EcommerceDemo,
+  ErpDemo,
+  FullStackDemo,
+  IosDemo,
+  PortalDemo,
+  ReportingDemo,
+  ResponsiveDemo,
+  StoreDemo,
+  UiKitDemo,
+  UxDemo,
+  WebAppDemo,
+} from "./build.jsx";
+import {
+  AiIntegrationDemo,
+  BiDemo,
+  ConsultingDemo,
+  DataAnalysisDemo,
+  DevTrainingDemo,
+  DocumentManagementDemo,
+  ProcessDigitalDemo,
+  TechSupportCoachDemo,
+  ThirdPartyDemo,
+} from "./data.jsx";
+import {
+  AppHardeningDemo,
+  AuditDemo,
+  BackupDemo,
+  DataProtectionDemo,
+  HostingDemo,
+  MaintenanceDemo,
+  MonitoringDemo,
+  ServerConfigDemo,
+  UserAssistDemo,
+} from "./run.jsx";
+
+// One demo per offering, in the same order as `offerings` in data/services.js.
+// `label` is the accessible description of the illustration.
+export const offeringDemos = {
+  "developpement-web": [
+    { Demo: WebDemo, label: "Démo : site vitrine qui défile, avec menu, bannière et produits" },
+    { Demo: WebAppDemo, label: "Démo : application web de réservation avec calendrier et formulaire" },
+    { Demo: EcommerceDemo, label: "Démo : boutique en ligne avec produits et panier" },
+    { Demo: PortalDemo, label: "Démo : espace client avec documents, demandes et notifications" },
+    { Demo: ErpDemo, label: "Démo : gestion interne avec modules ERP, CRM, RH et stocks" },
+    { Demo: FullStackDemo, label: "Démo : formulaire front-end envoyé à une API back-end" },
+    { Demo: ApiDemo, label: "Démo : points d’accès d’une API et réponse JSON" },
+  ],
+  "developpement-mobile": [
+    { Demo: AndroidDemo, label: "Démo : application Android de liste de tâches" },
+    { Demo: IosDemo, label: "Démo : application iOS avec écran d’accueil et réglages" },
+    { Demo: MobileDemo, label: "Démo : application multiplateforme de suivi de commandes" },
+    { Demo: AppUpdateDemo, label: "Démo : mise à jour d’application avec liste des changements" },
+    { Demo: StoreDemo, label: "Démo : fiche d’application publiée sur Google Play et l’App Store" },
+  ],
+  "logiciel-sur-mesure": [
+    { Demo: SoftwareDemo, label: "Démo : logiciel de gestion de stock" },
+    { Demo: BusinessAppDemo, label: "Démo : application métier de suivi de dossiers" },
+    { Demo: AutomationDemo, label: "Démo : règle d’automatisation déclenchée par une commande" },
+    { Demo: ReportingDemo, label: "Démo : rapport mensuel avec indicateurs et courbe" },
+  ],
+  "ui-ux-design": [
+    { Demo: UiKitDemo, label: "Démo : bibliothèque de composants d’interface" },
+    { Demo: UxDemo, label: "Démo : carte de chaleur et parcours utilisateur" },
+    { Demo: DesignDemo, label: "Démo : maquette filaire transformée en écran finalisé" },
+    { Demo: ResponsiveDemo, label: "Démo : même page adaptée à l’ordinateur, la tablette et le téléphone" },
+  ],
+  "hebergement-cloud": [
+    { Demo: HostingDemo, label: "Démo : serveurs actifs et site en ligne en HTTPS" },
+    { Demo: ServerConfigDemo, label: "Démo : fichier de configuration serveur et réglages" },
+    { Demo: CloudDemo, label: "Démo : pipeline de déploiement continu" },
+    { Demo: BackupDemo, label: "Démo : sauvegardes chiffrées et historique" },
+  ],
+  cybersecurite: [
+    { Demo: AuditDemo, label: "Démo : rapport d’audit de sécurité avec points à corriger" },
+    { Demo: AppHardeningDemo, label: "Démo : application sécurisée avec liste des protections" },
+    { Demo: SecurityDemo, label: "Démo : connexion avec code de vérification et journal d’accès" },
+    { Demo: DataProtectionDemo, label: "Démo : données personnelles masquées et chiffrées" },
+  ],
+  "maintenance-support": [
+    { Demo: MaintenanceDemo, label: "Démo : journal des versions avec correctifs et évolutions" },
+    { Demo: SupportDemo, label: "Démo : tableau de suivi des tickets" },
+    { Demo: MonitoringDemo, label: "Démo : supervision des serveurs avec alerte traitée" },
+    { Demo: UserAssistDemo, label: "Démo : conversation d’assistance avec un utilisateur" },
+  ],
+  "data-intelligence-artificielle": [
+    { Demo: DataAnalysisDemo, label: "Démo : tableau de données et nuage de points" },
+    { Demo: BiDemo, label: "Démo : tableau de bord BI avec filtres et graphiques" },
+    { Demo: AiIntegrationDemo, label: "Démo : classement automatique de documents par l’IA" },
+    { Demo: DataDemo, label: "Démo : assistant conversationnel qui résume des données" },
+  ],
+  "formation-conseil": [
+    { Demo: ConsultingDemo, label: "Démo : feuille de route de transformation digitale" },
+    { Demo: TechSupportCoachDemo, label: "Démo : séance d’accompagnement avec revue de code" },
+    { Demo: DevTrainingDemo, label: "Démo : exercice de programmation avec tests validés" },
+    { Demo: TrainingDemo, label: "Démo : module de formation DevOps avec programme et quiz" },
+  ],
+  "integration-digitalisation": [
+    { Demo: ProcessDigitalDemo, label: "Démo : formulaire papier transformé en formulaire en ligne" },
+    { Demo: ThirdPartyDemo, label: "Démo : outil relié à la messagerie, la comptabilité, le paiement et l’agenda" },
+    { Demo: DocumentManagementDemo, label: "Démo : gestion documentaire avec dossiers, recherche et versions" },
+    { Demo: IntegrationDemo, label: "Démo : circuit de validation jusqu’à la signature électronique" },
+  ],
+};

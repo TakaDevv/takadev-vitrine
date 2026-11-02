@@ -4,13 +4,13 @@ import ValueGrid from "../common/ValueGrid.jsx";
 
 export default function Advantages() {
   return (
-    <section aria-labelledby="valeurs" className="border-b border-line bg-night-800 py-16 sm:py-24 lg:py-32">
+    <section aria-labelledby="valeurs" className="py-16 sm:py-24 lg:py-32">
       <Container>
         <SectionHeading
           id="valeurs"
           index="03"
-          eyebrow="Valeurs"
-          title="Ce qui guide chaque projet."
+          eyebrow="Pourquoi TAKADEV"
+          title="Un partenaire présent avant, pendant et après le projet."
           description="Innovation, qualité, professionnalisme, écoute, fiabilité et accompagnement, de la première discussion jusqu’au suivi."
         />
         <div className="mt-12 lg:mt-16">

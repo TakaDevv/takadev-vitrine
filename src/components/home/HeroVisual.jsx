@@ -1,155 +1,134 @@
-const CENTER = 260;
+import { Check, ShieldCheck } from "lucide-react";
 
-// Six disciplines orbiting one core: the visual metaphor of an integrated studio.
-const nodes = [
-  { label: "WEB", angle: -90 },
-  { label: "MOBILE", angle: -30 },
-  { label: "CLOUD", angle: 30 },
-  { label: "DATA & IA", angle: 90 },
-  { label: "SÉCURITÉ", angle: 150 },
-  { label: "LOGICIEL", angle: 210 },
-].map((node) => {
-  const rad = (node.angle * Math.PI) / 180;
-  const cos = Math.cos(rad);
-  const sin = Math.sin(rad);
-  return {
-    ...node,
-    x: CENTER + 170 * cos,
-    y: CENTER + 170 * sin,
-    lx: CENTER + 202 * cos,
-    ly: CENTER + 202 * sin + (Math.abs(sin) > 0.9 ? sin * 6 : 4),
-    anchor: Math.abs(cos) < 0.2 ? "middle" : cos > 0 ? "start" : "end",
-  };
-});
-
-const ticks = Array.from({ length: 48 }, (_, index) => {
-  const rad = (index * 7.5 * Math.PI) / 180;
-  const inner = index % 4 === 0 ? 232 : 236;
-  return {
-    x1: CENTER + inner * Math.cos(rad),
-    y1: CENTER + inner * Math.sin(rad),
-    x2: CENTER + 242 * Math.cos(rad),
-    y2: CENTER + 242 * Math.sin(rad),
-  };
-});
-
-const steps = ["Analyse", "Conception", "Développement", "Tests"];
-const bars = [38, 62, 48, 80, 56, 92, 70];
+// Decorative product window: an illustration of a delivery workflow, not a real TAKADEV tool.
+// Every value below is neutral demo content and is labelled as such on screen.
+const stages = [
+  { label: "Analyse", state: "done" },
+  { label: "Conception", state: "done" },
+  { label: "Développement", state: "active" },
+  { label: "Tests", state: "todo" },
+  { label: "Production", state: "todo" },
+];
+const sections = ["Vue d’ensemble", "Livrables", "Environnements", "Sécurité", "Support"];
+const bars = [38, 55, 46, 70, 62, 84, 58];
+const environments = [
+  { label: "Recette", tone: "bg-success" },
+  { label: "Pré-production", tone: "bg-blue-400 hero-blink" },
+  { label: "Production", tone: "bg-line-strong" },
+];
 
 export default function HeroVisual() {
   return (
-    <div aria-hidden="true" className="relative mx-auto aspect-square w-full max-w-[34rem]">
-      <div className="parallax absolute inset-0" style={{ "--depth": 0.4 }}>
-        <svg viewBox="0 0 520 520" className="size-full" fill="none">
-          <defs>
-            <radialGradient id="hv-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          <circle cx={CENTER} cy={CENTER} r="200" fill="url(#hv-glow)" />
-          <circle cx={CENTER} cy={CENTER} r="242" stroke="rgb(148 163 184 / 0.16)" strokeDasharray="2 7" />
-          {ticks.map((tick, index) => (
-            <line key={index} {...tick} stroke="rgb(148 163 184 / 0.28)" />
-          ))}
-          <circle cx={CENTER} cy={CENTER} r="170" stroke="rgb(148 163 184 / 0.2)" />
-          <circle cx={CENTER} cy={CENTER} r="92" stroke="rgb(59 130 246 / 0.35)" />
-        </svg>
-      </div>
-
-      <div className="parallax absolute inset-0" style={{ "--depth": 0.9 }}>
-        <svg viewBox="0 0 520 520" className="size-full" fill="none">
-          <defs>
-            <linearGradient id="hv-core" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#3b82f6" />
-              <stop offset="100%" stopColor="#38bdf8" />
-            </linearGradient>
-          </defs>
-          {nodes.map((node, index) => (
-            <g key={node.label}>
-              <line x1={CENTER} y1={CENTER} x2={node.x} y2={node.y} stroke="rgb(59 130 246 / 0.32)" />
-              <line
-                className="pulse"
-                x1={CENTER}
-                y1={CENTER}
-                x2={node.x}
-                y2={node.y}
-                pathLength="100"
-                stroke="#38bdf8"
-                strokeWidth="2"
-                strokeLinecap="round"
-                style={{ "--d": `${index * 0.6}s` }}
-              />
-            </g>
-          ))}
-          {nodes.map((node) => (
-            <g key={`${node.label}-node`}>
-              <circle cx={node.x} cy={node.y} r="15" fill="#3b82f6" fillOpacity="0.12" />
-              <circle cx={node.x} cy={node.y} r="5" fill="#0c1426" stroke="#60a5fa" strokeWidth="1.5" />
-              <text
-                x={node.lx}
-                y={node.ly}
-                textAnchor={node.anchor}
-                className="font-mono"
-                fontSize="10.5"
-                letterSpacing="1.4"
-                fill="#94a3b8"
-              >
-                {node.label}
-              </text>
-            </g>
-          ))}
-          <rect x="214" y="214" width="92" height="92" rx="20" fill="#101a30" stroke="url(#hv-core)" strokeWidth="1.5" />
-          <rect x="226" y="226" width="68" height="68" rx="14" stroke="rgb(148 163 184 / 0.18)" />
-          <text
-            x={CENTER}
-            y="271"
-            textAnchor="middle"
-            className="font-display"
-            fontSize="28"
-            fontWeight="800"
-            letterSpacing="-0.5"
-            fill="#f8fafc"
-          >
-            TD
-          </text>
-        </svg>
-      </div>
-
-      <div className="parallax absolute inset-0" style={{ "--depth": 1.7 }}>
-        <div className="hero-panel absolute top-[-7%] right-[-6%] w-48 xl:w-52">
-          <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
-            <span className="font-mono text-[0.65rem] tracking-[0.14em] text-ink-400 uppercase">Projet · étapes</span>
-            <span className="size-1.5 rounded-full bg-success shadow-[0_0_8px_rgb(52_211_153/0.9)]" />
+    <div aria-hidden="true" className="relative mx-auto w-full max-w-[38rem] sm:py-8 sm:pr-4 sm:pl-6">
+      <div className="parallax" style={{ "--depth": 0.5 }}>
+        <div className="overflow-hidden rounded-[18px] border border-line-strong bg-night-800 shadow-[0_50px_100px_-40px_rgb(0_0_0/0.75),inset_0_1px_0_rgb(255_255_255/0.06)]">
+          <div className="flex items-center gap-2 border-b border-line px-4 py-3">
+            <span className="size-2.5 rounded-full bg-night-600" />
+            <span className="size-2.5 rounded-full bg-night-600" />
+            <span className="size-2.5 rounded-full bg-night-600" />
+            <span className="ml-3 font-mono text-xs text-ink-400">projet / tableau de suivi</span>
+            <span className="ml-auto rounded-md border border-line-strong px-2 py-0.5 font-mono text-[0.65rem] text-ink-400">
+              illustration
+            </span>
           </div>
-          <ul className="space-y-2 px-4 py-3 font-mono text-[0.72rem]">
-            {steps.map((step, index) => (
-              <li
-                key={step}
-                className="hero-step flex items-center justify-between text-ink-300"
-                style={{ "--d": `${1200 + index * 180}ms` }}
-              >
-                <span>{step}</span>
-                <span className={index < 3 ? "text-cyan-400" : "text-ink-400"}>{index < 3 ? "✓" : "…"}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mx-4 mb-4 h-1 overflow-hidden rounded-full bg-night-600">
-            <div className="hero-progress h-full w-full bg-linear-to-r from-blue-500 to-cyan-400" />
+
+          <div className="grid sm:grid-cols-[8.5rem_minmax(0,1fr)]">
+            <ul className="hidden space-y-1 border-r border-line p-3 text-[0.8rem] text-ink-400 sm:block">
+              {sections.map((section, index) => (
+                <li
+                  key={section}
+                  className={`rounded-lg px-2.5 py-2 ${index === 0 ? "bg-blue-600/25 text-ink-50" : ""}`}
+                >
+                  {section}
+                </li>
+              ))}
+            </ul>
+
+            <div className="space-y-4 p-5">
+              <div className="flex items-baseline justify-between">
+                <span className="font-display text-sm font-bold text-ink-50">Cycle de livraison</span>
+                <span className="font-mono text-[0.65rem] text-ink-400">sprint en cours</span>
+              </div>
+
+              <ul className="space-y-2.5">
+                {stages.map((stage, index) => (
+                  <li
+                    key={stage.label}
+                    className={`hero-step grid grid-cols-[6.5rem_minmax(0,1fr)_1rem] items-center gap-3 text-[0.8rem] ${
+                      stage.state === "todo" ? "text-ink-400" : stage.state === "active" ? "text-ink-50" : "text-ink-300"
+                    }`}
+                    style={{ "--d": `${900 + index * 140}ms` }}
+                  >
+                    <span>{stage.label}</span>
+                    <span className="h-1.5 overflow-hidden rounded-full bg-line-strong/60">
+                      {stage.state !== "todo" ? (
+                        <span
+                          className={`block h-full rounded-full bg-blue-600 ${stage.state === "active" ? "hero-progress shimmer" : ""}`}
+                        />
+                      ) : null}
+                    </span>
+                    {stage.state === "done" ? (
+                      <Check size={14} strokeWidth={2.4} className="text-blue-400" />
+                    ) : stage.state === "active" ? (
+                      <span className="hero-blink ml-0.5 size-2 rounded-full bg-blue-400" />
+                    ) : (
+                      <span />
+                    )}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-3">
+                <div className="rounded-xl border border-line p-3.5">
+                  <p className="font-mono text-[0.65rem] text-ink-400">Activité · données fictives</p>
+                  <div className="mt-3 flex h-16 items-end gap-1.5">
+                    {bars.map((height, index) => (
+                      <span
+                        key={index}
+                        className={`hero-bar hero-bar-live flex-1 rounded-t-[3px] ${index === 5 ? "bg-blue-600" : "bg-blue-400/35"}`}
+                        style={{ height: `${height}%`, "--d": `${1200 + index * 80}ms` }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-2.5 rounded-xl border border-line p-3.5">
+                  <p className="font-mono text-[0.65rem] text-ink-400">Environnements</p>
+                  {environments.map((env) => (
+                    <p key={env.label} className="flex items-center gap-2 text-[0.8rem] text-ink-300">
+                      <span className={`size-2 rounded-full ${env.tone}`} />
+                      {env.label}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="hero-panel absolute bottom-[-6%] left-[-4%] w-44 p-4 xl:w-48">
-          <p className="font-mono text-[0.65rem] tracking-[0.14em] text-ink-400 uppercase">Tableau de bord</p>
-          <div className="mt-4 flex h-20 items-end gap-1.5">
-            {bars.map((height, index) => (
-              <span
-                key={index}
-                className={`hero-bar flex-1 rounded-t-[3px] ${index === 5 ? "bg-cyan-400" : "bg-blue-500/55"}`}
-                style={{ height: `${height}%`, "--d": `${1300 + index * 90}ms` }}
-              />
-            ))}
-          </div>
+      <div className="parallax absolute inset-0 hidden sm:block" style={{ "--depth": 1.4 }}>
+        <div className="hero-float hero-panel absolute bottom-1 left-0 w-56 px-4 py-3.5">
+          <p className="font-mono text-[0.65rem] text-ink-400">pipeline · build</p>
+          <p className="mt-2 flex items-center gap-2.5 text-sm text-ink-50">
+            <span className="grid size-6 place-items-center rounded-md bg-success/15">
+              <Check size={14} strokeWidth={2.4} className="text-success" />
+            </span>
+            Tests automatisés passés
+          </p>
+        </div>
+        <div className="hero-float hero-panel absolute top-0 right-0 w-52 px-4 py-3.5" style={{ "--float-delay": "-3s" }}>
+          <p className="flex items-center gap-2.5 text-sm text-ink-50">
+            <ShieldCheck size={18} strokeWidth={1.6} className="text-blue-400" />
+            Accès sécurisés
+          </p>
+          <p className="mt-1.5 font-mono text-[0.65rem] text-ink-400">authentification · rôles</p>
+        </div>
+        <div
+          className="hero-float absolute right-6 -bottom-1 flex items-center gap-2.5 rounded-xl bg-white px-3.5 py-2.5 shadow-lift"
+          style={{ "--float-delay": "-5s" }}
+        >
+          <span className="font-mono text-xs font-semibold text-[#2563eb]">GET /api</span>
+          <span className="font-mono text-xs text-[#5b6579]">200 · ok</span>
         </div>
       </div>
     </div>

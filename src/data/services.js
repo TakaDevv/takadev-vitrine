@@ -151,3 +151,39 @@ export const services = [
 export function getService(slug) {
   return services.find((service) => service.slug === slug);
 }
+
+// Presentation groupings only: every service keeps its own page and offerings.
+export const serviceFamilies = [
+  {
+    id: "developpement",
+    title: "Développement",
+    summary: "Web, mobile et logiciels sur mesure.",
+    icon: "Code",
+    services: ["developpement-web", "developpement-mobile", "logiciel-sur-mesure"],
+  },
+  {
+    id: "design",
+    title: "Design",
+    summary: "UI/UX et conception d’interfaces.",
+    icon: "PenTool",
+    services: ["ui-ux-design"],
+  },
+  {
+    id: "infrastructure-securite",
+    title: "Infrastructure & Sécurité",
+    summary: "Hébergement, cloud, DevOps, cybersécurité, maintenance et support.",
+    icon: "Server",
+    services: ["hebergement-cloud", "cybersecurite", "maintenance-support"],
+  },
+  {
+    id: "data-transformation",
+    title: "Data & Transformation",
+    summary: "Intelligence artificielle, formation, conseil, intégration et digitalisation.",
+    icon: "Sparkles",
+    services: ["data-intelligence-artificielle", "formation-conseil", "integration-digitalisation"],
+  },
+].map((family) => ({ ...family, services: family.services.map(getService) }));
+
+export function serviceNumber(service) {
+  return String(services.indexOf(service) + 1).padStart(2, "0");
+}

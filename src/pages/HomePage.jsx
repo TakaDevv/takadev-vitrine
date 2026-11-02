@@ -2,8 +2,10 @@ import AboutEditorial from "../components/about/AboutEditorial.jsx";
 import CtaBand from "../components/common/CtaBand.jsx";
 import Seo from "../components/common/Seo.jsx";
 import Advantages from "../components/home/Advantages.jsx";
+import ClientsBand from "../components/home/ClientsBand.jsx";
 import Hero from "../components/home/Hero.jsx";
 import ProcessPreview from "../components/home/ProcessPreview.jsx";
+import ProjectsPreview from "../components/home/ProjectsPreview.jsx";
 import ServicePreview from "../components/home/ServicePreview.jsx";
 import { company } from "../data/company.js";
 
@@ -41,6 +43,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replaceAll("<", "\\u003c") }}
       />
       <Hero />
+      <ClientsBand />
       <ServicePreview />
       <AboutEditorial
         id="a-propos-apercu"
@@ -50,7 +53,8 @@ export default function HomePage() {
       />
       <Advantages />
       <ProcessPreview />
-      <CtaBand index="05" />
+      <ProjectsPreview />
+      <CtaBand index="06" withForm />
     </>
   );
 }

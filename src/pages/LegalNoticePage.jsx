@@ -6,7 +6,15 @@ import Seo from "../components/common/Seo.jsx";
 export default function LegalNoticePage() {
   const rows = [
     { label: "Éditeur", value: company.legalName },
-    { label: "Adresse", value: company.address },
+    {
+      label: "Adresse",
+      value: (
+        <a href={company.mapsHref} target="_blank" rel="noopener noreferrer" className="link-u text-blue-400">
+          {company.address}
+          <span className="sr-only"> — voir sur Google Maps (nouvel onglet)</span>
+        </a>
+      ),
+    },
     {
       label: "Téléphone",
       value: (

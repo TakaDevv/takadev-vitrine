@@ -25,6 +25,8 @@ const channels = [
     title: "Adresse",
     icon: MapPin,
     value: company.address,
+    href: company.mapsHref,
+    external: "Voir l’adresse sur Google Maps (nouvel onglet)",
   },
 ];
 
@@ -78,8 +80,13 @@ export default function ContactPage() {
                 return (
                   <li key={channel.title}>
                     {channel.href ? (
-                      <a href={channel.href} className="group flex items-start gap-4 py-5">
+                      <a
+                        href={channel.href}
+                        className="group flex items-start gap-4 py-5"
+                        {...(channel.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      >
                         {content}
+                        {channel.external ? <span className="sr-only"> — {channel.external}</span> : null}
                         <ArrowUpRight
                           aria-hidden="true"
                           size={18}

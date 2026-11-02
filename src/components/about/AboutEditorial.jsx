@@ -12,12 +12,12 @@ const facts = [
   { label: "Siège", value: "Ben Aknoun, Alger" },
 ];
 
-// Light editorial band: the one paper section that breaks the night rhythm.
+// White editorial band: the only place besides the footer where the raster logo appears.
 export default function AboutEditorial({ id, index, eyebrow = "À propos", title, showLink = false }) {
   const [lead, ...rest] = about.paragraphs;
 
   return (
-    <section aria-labelledby={id} className="paper relative bg-ink-50 py-16 text-paper-body sm:py-24 lg:py-32">
+    <section aria-labelledby={id} className="paper relative border-y border-line bg-night-800 py-16 text-paper-body sm:py-24 lg:py-32">
       <Container className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-32">

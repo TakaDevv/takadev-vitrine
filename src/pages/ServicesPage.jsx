@@ -1,27 +1,41 @@
 import Container from "../components/common/Container.jsx";
-import CtaBand from "../components/common/CtaBand.jsx";
-import PageIntro from "../components/common/PageIntro.jsx";
+import SectionHeading from "../components/common/SectionHeading.jsx";
 import Seo from "../components/common/Seo.jsx";
-import ServiceGrid from "../components/services/ServiceGrid.jsx";
+import FamilyNav from "../components/services/FamilyNav.jsx";
+import ProjectCTA from "../components/services/ProjectCTA.jsx";
+import ServiceCategory from "../components/services/ServiceCategory.jsx";
+import ServicesHero from "../components/services/ServicesHero.jsx";
+import { serviceFamilies } from "../data/services.js";
 
 export default function ServicesPage() {
   return (
     <>
       <Seo
         title="Services"
-        description="Développement web et mobile, logiciels sur mesure, maintenance, formation et accompagnement numérique par TAKADEV."
+        description="Développement web et mobile, logiciels sur mesure, UI/UX, cloud, cybersécurité, maintenance, data et IA, formation et digitalisation par TAKADEV."
       />
-      <PageIntro
-        eyebrow="Nos services"
-        title="Dix domaines pour concevoir, déployer et faire vivre vos outils."
-        description="Chaque offre mène vers une page dédiée et vers une demande de devis."
-      />
-      <section aria-label="Catalogue des services" className="py-16 sm:py-20 lg:py-24">
+      <ServicesHero />
+
+      <section id="catalogue" aria-labelledby="catalogue-titre" className="py-16 sm:py-24">
         <Container>
-          <ServiceGrid headingAs="h2" />
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              id="catalogue-titre"
+              eyebrow="Catalogue"
+              title="Dix services, quatre familles d’expertise."
+              description="Chaque service mène vers une page détaillée et vers une demande de devis."
+            />
+          </div>
+          <FamilyNav />
+          <div className="mt-8">
+            {serviceFamilies.map((family, index) => (
+              <ServiceCategory key={family.id} family={family} index={index} />
+            ))}
+          </div>
         </Container>
       </section>
-      <CtaBand />
+
+      <ProjectCTA />
     </>
   );
 }
